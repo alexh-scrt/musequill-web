@@ -1,0 +1,75 @@
+# docker-compose.yml for Newsletter Service
+version: '3.8'
+
+services:
+  newsletter:
+    build: .
+    container_name: musequill-newsletter
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_PATH=/app/data/newsletter.db
+      - HOST=0.0.0.0
+      - PORT=8080
+      - ADMIN_TOKEN=${ADMIN_TOKEN:-musequill-admin-2025}
+      - SMTP_SERVER=${SMTP_SERVER:-smtp.gmail.com}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - FROM_EMAIL=${FROM_EMAIL:-noreply@musequill.ink}
+      - FROM_NAME=${FROM_NAME:-MuseQuill.ink Team}
+    volumes:
+      - newsletter_data:/app/data
+      - newsletter_logs:/app/logs
+      - newsletter_backups:/app/backups
+    restart: unless-stopped
+    networks:
+      - newsletter_net
+
+  # Optional: Nginx reverse proxy
+  nginx:
+    image: nginx:alpine
+    container_name: musequill-newsletter-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - newsletter
+    restart: unless-stopped
+    networks:
+      - newsletter_net
+
+  # Optional: PostgreSQL database (instead of SQLite)
+  postgres:
+    image: postgres:15-alpine
+    container_name: musequill-newsletter-db
+    environment:
+      - POSTGRES_DB=newsletter
+      - POSTGRES_USER=newsletter
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-newsletter123}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - newsletter_net
+
+  # Optional: Redis for caching
+  redis:
+    image: redis:7-alpine
+    container_name: musequill-newsletter-redis
+    restart: unless-stopped
+    networks:
+      - newsletter_net
+
+volumes:
+  newsletter_data:
+  newsletter_logs:
+  newsletter_backups:
+  postgres_data:
+
+networks:
+  newsletter_net:
+    driver: bridge

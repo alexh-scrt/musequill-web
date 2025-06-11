@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuseQuill.ink - Where Digital Quills Meet Virtual Ink | AI Book Writing Revolution</title>
+    <meta name="description"
+        content="Transform your book ideas into publication-ready masterpieces with AI-powered multi-agent collaboration. MuseQuill.ink: The future of book writing is here.">
+    <meta name="keywords"
+        content="AI book writing, automated book generation, AI writing assistant, multi-agent AI, book publishing, creative writing AI">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="MuseQuill.ink - Revolutionary AI Book Writing System">
+    <meta property="og:description"
+        content="Where Digital Quills Meet Virtual Ink - Transform ideas into published books with AI">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://musequill.ink">
+
+    <!-- Favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖋️</text></svg>">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --dark-bg: #0f0f23;
+            --light-text: #ffffff;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--dark-bg);
+            color: var(--light-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--primary-gradient);
+            opacity: 0.1;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(45deg,
+                    transparent,
+                    transparent 20px,
+                    rgba(255, 255, 255, 0.03) 20px,
+                    rgba(255, 255, 255, 0.03) 40px);
+            animation: drift 20s linear infinite;
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(102, 126, 234, 0.6);
+            }
+        }
+
+        @keyframes typewriter {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--light-text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem 2rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            margin-bottom: 1rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .tagline {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            color: var(--silver);
+            font-style: italic;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+            opacity: 0;
+            animation: fadeInUp 1s ease 1s forwards;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            margin: 3rem 0;
+            opacity: 0;
+            animation: fadeInUp 1s ease 1.5s forwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: var(--secondary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.4);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        /* Features Grid */
+        .features {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-gradient);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--gold);
+        }
+
+        /* Technology Section */
+        .technology {
+            padding: 6rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tech-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .tech-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .tech-logo {
+            background: var(--glass-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .tech-logo:hover {
+            transform: scale(1.1);
+            background: var(--primary-gradient);
+        }
+
+        /* Coming Soon Section */
+        .coming-soon {
+            padding: 6rem 2rem;
+            text-align: center;
+            background: var(--dark-bg);
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 2rem;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--gold);
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        /* Newsletter Signup */
+        .newsletter {
+            background: var(--primary-gradient);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .newsletter-form {
+            max-width: 500px;
+            margin: 2rem auto 0;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 1rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+
+        .newsletter-input::placeholder {
+            color: #666;
+        }
+
+        .newsletter-button {
+            padding: 1rem 2rem;
+            background: var(--secondary-gradient);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-bg);
+            padding: 3rem 2rem 1rem;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            color: var(--light-text);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--gold);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-logos {
+                gap: 1.5rem;
+            }
+
+            .countdown {
+                gap: 1rem;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .newsletter-input {
+                min-width: auto;
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            animation: float-particle 8s linear infinite;
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-animation"></div>
+
+    <!-- Floating particles -->
+    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+    <div class="particle" style="left: 40%; animation-delay: 6s;"></div>
+    <div class="particle" style="left: 50%; animation-delay: 1s;"></div>
+    <div class="particle" style="left: 60%; animation-delay: 3s;"></div>
+    <div class="particle" style="left: 70%; animation-delay: 5s;"></div>
+    <div class="particle" style="left: 80%; animation-delay: 7s;"></div>
+    <div class="particle" style="left: 90%; animation-delay: 2.5s;"></div>
+
+    <header>
+        <nav>
+            <div class="logo">MuseQuill.ink</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#technology">Technology</a></li>
+                <li><a href="#early-access">Early Access</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>MuseQuill.ink</h1>
+                <p class="tagline">Where Digital Quills Meet Virtual Ink</p>
+                <p class="hero-description">
+                    Transform your book ideas into publication-ready masterpieces with revolutionary AI-powered
+                    multi-agent collaboration. From short descriptions to complete novels, experience the future
+                    of creative writing where artificial intelligence becomes your perfect writing partner.
+                </p>
+                <div class="cta-section">
+                    <a href="#early-access" class="cta-button">
+                        🚀 Join the Writing Revolution
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <h2>Revolutionary Features</h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in-up">
+                    <span class="feature-icon">🤖</span>
+                    <h3>Multi-Agent AI Orchestra</h3>
+                    <p>Nine specialized AI agents work in harmony - from planning and research to writing and quality
+                        control, each agent masters their craft to create your perfect book.</p>
+                </div>
+
+                <div class="feature-card fade-in-up">
+                    <span class="feature-icon">🧠</span>
+                    <h3>Hybrid Memory System</h3>
+                    <p>Advanced knowledge graphs and vector stores ensure perfect character consistency, plot coherence,
+                        and narrative continuity across your entire book.</p>
+                </div>
+
+                <div class="feature-card fade-in-up">
+                    <span class="feature-icon">🔍</span>
+                    <h3>Real-Time Research</h3>
+                    <p>Multi-API research engine provides authentic details, fact-checking, and credible sources to make
+                        your fiction feel real and your non-fiction accurate.</p>
+                </div>
+
+                <div class="feature-card fade-in-up">
+                    <span class="feature-icon">⚔️</span>
+                    <h3>Adversarial Quality Control</h3>
+                    <p>Critic and Proponent agents engage in structured debates to identify weaknesses and refine every
+                        aspect until your book reaches publication quality.</p>
+                </div>
+
+                <div class="feature-card fade-in-up">
+                    <span class="feature-icon">📊</span>
+                    <h3>Intelligent Orchestration</h3>
+                    <p>LangGraph coordinates complex workflows, manages agent interactions, and provides real-time
+                        visibility into your book's creation process.</p>
+                </div>
+
+                <div class="feature-card fade-in-up">
+                    <span class="feature-icon">✨</span>
+                    <h3>Human-AI Collaboration</h3>
+                    <p>Stay in creative control with strategic decision points, preference learning, and adaptive AI
+                        that grows with your unique writing style.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="technology" id="technology">
+            <div class="tech-content">
+                <h2>Powered by Cutting-Edge AI</h2>
+                <p>Built on the most advanced AI technologies available, MuseQuill.ink combines multiple breakthrough
+                    innovations to deliver unprecedented writing assistance.</p>
+
+                <div class="tech-logos">
+                    <div class="tech-logo">
+                        <strong>GPT-4o</strong><br>
+                        <small>Creative Engine</small>
+                    </div>
+                    <div class="tech-logo">
+                        <strong>LangGraph</strong><br>
+                        <small>Agent Orchestration</small>
+                    </div>
+                    <div class="tech-logo">
+                        <strong>Vector AI</strong><br>
+                        <small>Semantic Memory</small>
+                    </div>
+                    <div class="tech-logo">
+                        <strong>Multi-API</strong><br>
+                        <small>Research Engine</small>
+                    </div>
+                </div>
+
+                <div class="fade-in-up">
+                    <h3>The First Complete AI Book Writing System</h3>
+                    <p>While others offer simple writing assistants, MuseQuill.ink provides a complete publishing
+                        pipeline with research integration, quality assurance, and multi-agent collaboration that
+                        produces publication-ready manuscripts.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="coming-soon" id="early-access">
+            <h2>Launch Countdown</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 2rem;">The future of book writing launches soon. Be among the
+                first to experience the revolution.</p>
+
+            <div class="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">45</span>
+                    <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">12</span>
+                    <span class="countdown-label">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">34</span>
+                    <span class="countdown-label">Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">56</span>
+                    <span class="countdown-label">Seconds</span>
+                </div>
+            </div>
+
+            <div
+                style="background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 3rem; margin: 3rem auto; max-width: 600px;">
+                <h3 style="color: var(--gold); margin-bottom: 1rem;">🎯 Early Access Benefits</h3>
+                <ul style="text-align: left; max-width: 400px; margin: 0 auto;">
+                    <li>✅ 50% off lifetime access</li>
+                    <li>✅ Priority support and training</li>
+                    <li>✅ Influence product development</li>
+                    <li>✅ Exclusive beta features</li>
+                    <li>✅ Direct access to our AI team</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="newsletter">
+            <h2>Reserve Your Spot in History</h2>
+            <p>Join 5,000+ writers who are waiting to transform their creative process. Get exclusive updates, early
+                access, and special launch pricing.</p>
+
+            <form class="newsletter-form" id="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
+                <button type="submit" class="newsletter-button">🚀 Get Early Access</button>
+            </form>
+
+            <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8;">
+                No spam, ever. Unsubscribe anytime. Your email helps us gauge interest and send important launch
+                updates.
+            </p>
+        </section>
+    </main>
+
+    <footer id="contact">
+        <div class="footer-content">
+            <h3>Connect With MuseQuill.ink</h3>
+            <div class="social-links">
+                <a href="#" title="Twitter">🐦</a>
+                <a href="#" title="LinkedIn">💼</a>
+                <a href="#" title="GitHub">💻</a>
+                <a href="mailto:team@musequill.ink" title="Email">📧</a>
+            </div>
+            <p>&copy; 2024 MuseQuill.ink. All rights reserved.</p>
+            <p style="opacity: 0.7; font-size: 0.9rem;">
+                Built with ❤️ for writers who dream of effortless creation
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Countdown timer to September 1, 2025
+        function updateCountdown() {
+            // Set launch date to September 1, 2025 at midnight UTC
+            const launchDate = new Date('2025-09-01T00:00:00Z');
+            
+            const now = new Date().getTime();
+            const distance = launchDate.getTime() - now;
+            
+            if (distance > 0) {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            } else {
+                // Launch day has arrived!
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                
+                // You could redirect to the actual app or show a launch message
+                document.querySelector('.coming-soon h2').textContent = '🎉 We\'re Live!';
+            }
+        }
+        
+        // Update countdown every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+        
+        // Newsletter form handling with standalone newsletter service
+        document.getElementById('newsletter-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            const button = this.querySelector('button');
+            const originalText = button.textContent;
+            
+            // Validate email
+            if (!email || !email.includes('@')) {
+                button.textContent = '❌ Invalid email';
+                button.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%)';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = 'var(--secondary-gradient)';
+                }, 2000);
+                return;
+            }
+            
+            // Show loading state
+            button.textContent = '⏳ Saving...';
+            button.disabled = true;
+            
+            // Collect additional tracking data
+            const signupData = {
+                email: email,
+                source: 'landing_page',
+                campaign: 'early_access_2025',
+                referrer: document.referrer,
+                user_agent: navigator.userAgent,
+                utm_source: getUrlParameter('utm_source'),
+                utm_medium: getUrlParameter('utm_medium'),
+                utm_campaign: getUrlParameter('utm_campaign'),
+                utm_content: getUrlParameter('utm_content')
+            };
+            
+            try {
+                // Primary: Send to standalone newsletter service
+                // const newsletterServiceUrl = 'https://newsletter.musequill.ink/signup';
+                const newsletterServiceUrl = 'http://127.0.0.1:8044/signup';
+                // Fallback for local development
+                const fallbackUrl = 'http://localhost:8044/signup';
+                
+                let response;
+                try {
+                    response = await fetch(newsletterServiceUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(signupData)
+                    });
+                } catch (primaryError) {
+                    console.log('Primary newsletter service unavailable, trying fallback...');
+                    response = await fetch(fallbackUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(signupData)
+                    });
+                }
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    
+                    // Success
+                    button.textContent = '✅ Welcome aboard!';
+                    button.style.background = 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)';
+                    this.reset();
+                    
+                    // Show success message
+                    showNotification(result.message || '🎉 You\'re on the list! Check your email for exclusive updates.', 'success');
+                    
+                    // Track success
+                    trackEvent('newsletter_signup', {
+                        email: email,
+                        source: signupData.source,
+                        campaign: signupData.campaign
+                    });
+                    
+                } else {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.detail || 'Server error');
+                }
+                
+            } catch (error) {
+                console.error('Newsletter signup error:', error);
+                
+                // Fallback: Save to localStorage for manual processing
+                const savedEmails = JSON.parse(localStorage.getItem('musequill_emails') || '[]');
+                const emailData = {
+                    ...signupData,
+                    timestamp: new Date().toISOString(),
+                    error: error.message
+                };
+                savedEmails.push(emailData);
+                localStorage.setItem('musequill_emails', JSON.stringify(savedEmails));
+                
+                button.textContent = '📧 Saved locally!';
+                button.style.background = 'linear-gradient(135deg, #ffa726 0%, #ff9800 100%)';
+                this.reset();
+                
+                showNotification('📧 Email saved! We\'ll contact you when we launch.', 'warning');
+                
+                // Track error
+                trackEvent('newsletter_signup_error', {
+                    email: email,
+                    error: error.message,
+                    fallback: 'localStorage'
+                });
+            }
+            
+            // Reset button after 3 seconds
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = 'var(--secondary-gradient)';
+                button.disabled = false;
+            }, 3000);
+        });
+        
+        // Helper function to get URL parameters
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        
+        // Simple analytics tracking
+        function trackEvent(event, data = {}) {
+            try {
+                // Send to newsletter service analytics
+                fetch('https://newsletter.musequill.ink/track', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        event: event,
+                        data: data,
+                        timestamp: new Date().toISOString(),
+                        page: window.location.href
+                    })
+                }).catch(console.error);
+                
+                // Google Analytics (if available)
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', event, data);
+                }
+                
+                // Other analytics services can be added here
+                
+            } catch (error) {
+                console.error('Analytics tracking failed:', error);
+            }
+        }
+        
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' : 
+                           type === 'warning' ? 'linear-gradient(135deg, #ffa726 0%, #ff9800 100%)' :
+                           'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'};
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 10000;
+                max-width: 300px;
+                font-weight: 500;
+                animation: slideInRight 0.5s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.5s ease forwards';
+                setTimeout(() => {
+                    notification.remove();
+                }, 500);
+            }, 5000);
+        }
+        
+        // Add notification animations
+        const notificationStyle = document.createElement('style');
+        notificationStyle.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(notificationStyle);
+        
+        // Add some interactive particles on click
+        document.addEventListener('click', function(e) {
+            for (let i = 0; i < 5; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: fixed;
+                    width: 6px;
+                    height: 6px;
+                    background: var(--gold);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 9999;
+                    left: ${e.clientX}px;
+                    top: ${e.clientY}px;
+                    animation: explode 1s ease-out forwards;
+                `;
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            }
+        });
+        
+        // Add explosion animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes explode {
+                0% {
+                    transform: translate(0, 0) scale(1);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px) scale(0);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>

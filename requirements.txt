@@ -1,0 +1,63 @@
+# MuseQuill Newsletter Service Requirements
+# Compatible with Python 3.13
+
+# Core web framework
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+
+# Data validation (Python 3.13 compatible)
+pydantic[email]==2.10.3
+
+# ASGI server for production
+gunicorn==23.0.0
+
+# Email handling (async SMTP)
+aiosmtplib==3.0.2
+
+# Optional: Enhanced logging
+structlog>=24.5.0
+
+# Optional: For advanced analytics and data processing
+pandas==2.2.3
+plotly==5.24.1
+
+# Optional: PostgreSQL support (if upgrading from SQLite)
+psycopg2-binary==2.9.10
+sqlalchemy==2.0.36
+
+# Optional: Redis support for caching
+redis==5.2.1
+hiredis==3.0.0
+
+# Optional: HTTP client for external integrations
+httpx==0.28.1
+requests==2.32.3
+
+# Optional: JWT token handling
+pyjwt==2.10.1
+
+# Optional: Environment variable handling
+python-dotenv==1.0.1
+
+# Optional: Rate limiting
+slowapi==0.1.9
+
+# Optional: Email service integrations
+sendgrid==6.11.0
+mailchimp-marketing==3.0.80
+
+# Optional: Monitoring and metrics
+prometheus-client==0.21.1
+
+# Development dependencies (uncomment for development)
+# pytest==8.3.4
+# pytest-asyncio==0.24.0
+# pytest-cov==6.0.0
+# black==24.10.0
+# isort==5.13.2
+# mypy==1.13.0
+# ruff==0.8.4
+
+# Testing utilities
+# httpx[testing]==0.28.1
+# faker==33.1.0

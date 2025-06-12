@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MuseQuill.ink Newsletter Service - Fixed Version
+MuseQuill.ink Newsletter Service - Complete Fixed Version
 Independent microservice for collecting newsletter signups and analytics.
 
 Fixed issues:
@@ -8,6 +8,7 @@ Fixed issues:
 - Deprecated datetime.utcnow() usage
 - Timezone-aware datetime handling
 - Deprecated regex parameter in FastAPI
+- Ad-blocker friendly endpoints
 """
 
 import asyncio
@@ -33,6 +34,11 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel, EmailStr, Field, validator
 import uvicorn
 
+class AnalyticsEvent(BaseModel):
+    event: str
+    data: Dict[str, Any] = {}
+    timestamp: str
+    page: str
 
 # Configuration
 @dataclass
@@ -362,7 +368,7 @@ class NewsletterDatabase:
             return [dict(row) for row in conn.execute(query, params).fetchall()]
 
 
-# Email Manager - unchanged
+# Email Manager
 class EmailManager:
     """Handle email sending functionality."""
     
@@ -500,10 +506,9 @@ def create_newsletter_app(config: NewsletterConfig) -> FastAPI:
             raise HTTPException(status_code=403, detail="Invalid admin token")
         return True
     
-    # Routes
-    @app.post("/signup", response_model=NewsletterResponse)
-    async def newsletter_signup(signup: NewsletterSignup, request: Request):
-        """Handle newsletter signup."""
+    # Shared signup processing function
+    async def process_signup(signup: NewsletterSignup, request: Request):
+        """Process signup request (shared logic)."""
         try:
             ip_address = get_client_ip(request)
             subscriber_id = db.add_subscriber(signup, ip_address)
@@ -534,6 +539,22 @@ def create_newsletter_app(config: NewsletterConfig) -> FastAPI:
         except Exception as e:
             logging.error(f"Signup failed for {signup.email}: {e}")
             raise HTTPException(status_code=500, detail="Signup failed. Please try again.")
+    
+    # Routes - Multiple endpoints for ad-blocker compatibility
+    @app.post("/signup", response_model=NewsletterResponse)
+    async def newsletter_signup(signup: NewsletterSignup, request: Request):
+        """Handle newsletter signup."""
+        return await process_signup(signup, request)
+    
+    @app.post("/register", response_model=NewsletterResponse) 
+    async def newsletter_register(signup: NewsletterSignup, request: Request):
+        """Handle newsletter registration (ad-blocker friendly endpoint)."""
+        return await process_signup(signup, request)
+    
+    @app.post("/contact", response_model=NewsletterResponse)
+    async def newsletter_contact(signup: NewsletterSignup, request: Request):
+        """Handle newsletter contact form (ad-blocker friendly endpoint)."""
+        return await process_signup(signup, request)
     
     @app.get("/analytics", response_model=AnalyticsResponse)
     async def get_analytics(
@@ -579,7 +600,19 @@ def create_newsletter_app(config: NewsletterConfig) -> FastAPI:
             "launch_countdown": analytics["launch_countdown"],
             "growth_trend": len(analytics["daily_signups"])
         }
-    
+
+    @app.post("/track")
+    async def track_event(event_data: AnalyticsEvent):
+        try:
+            # Log to file
+            with open("analytics.log", "a") as f:
+                f.write(f"{datetime.now().isoformat()}: {event_data.json()}\n")
+            
+            return {"success": True, "message": "Event tracked"}
+        
+        except Exception as e:
+            return {"success": False, "error": str(e)}
+
     @app.get("/health")
     async def health_check():
         """Health check endpoint."""
